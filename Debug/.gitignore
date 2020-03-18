@@ -1,0 +1,8 @@
+*.pdb
+*.idb
+*.obj
+*.vcxproj.FileListAbsolute.txt
+*.log
+*.ilk
+*.exe
+*.pch

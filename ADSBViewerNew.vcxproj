@@ -228,6 +228,7 @@
     <Image Include="res\ADSBViewerDoc.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ADS-B Viewer.lyx" />
     <None Include="res\ADSBViewer.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
