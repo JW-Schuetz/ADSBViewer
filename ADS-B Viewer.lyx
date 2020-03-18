@@ -1,0 +1,806 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Konzept ADS-B Viewer
+\end_layout
+
+\begin_layout Section*
+Designentscheidungen
+\end_layout
+
+\begin_layout Subsection*
+ADS-B Empfang
+\end_layout
+
+\begin_layout Subsubsection*
+Hardware
+\end_layout
+
+\begin_layout Itemize
+RTL-SDR Dongle
+\end_layout
+
+\begin_layout Itemize
+Rasberry-Pi 
+\end_layout
+
+\begin_layout Subsubsection*
+Software
+\end_layout
+
+\begin_layout Itemize
+Kommandozeile Rasberry-Pi: while true; do ( (echo HTTP/1.0 200 ok; echo;
+ rtl_adsb -S -Q2; ) | netcat -l 1234); done
+\end_layout
+
+\begin_layout Itemize
+Änderungen:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Erkennung der ADS-B Meldungen verbessern (pufferübergreifende Auswertung)
+\end_layout
+
+\begin_layout Itemize
+Fehlerkorrekturen von 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+literal "false"
+
+\end_inset
+
+ übernehmen
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Visualisierung
+\end_layout
+
+\begin_layout Subsubsection*
+Hardware
+\end_layout
+
+\begin_layout Itemize
+ThinkPad X1 Laptop Windows 10
+\end_layout
+
+\begin_layout Subsubsection*
+Software
+\end_layout
+
+\begin_layout Itemize
+C++
+\end_layout
+
+\begin_layout Itemize
+MFC mit Document/View-Konzept benutzen.
+ Immer nur ein Dokument.
+ Zunächst mit nur eine Ansicht auf die Rawmessages und später eine Ansicht
+ der dekodierten ADS-B Meldungen.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The view is responsible for displaying 
+\color red
+and modifying
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+gemeint ist: vom User!
+\end_layout
+
+\end_inset
+
+
+\color inherit
+ the document's data but 
+\color red
+not for storing it
+\color inherit
+.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+gemeint ist: in eine Datei speichern!
+\end_layout
+
+\end_inset
+
+ The document provides the view with the necessary details
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+also z.B.
+ die Dekodierung im Dokument machen!
+\end_layout
+
+\end_inset
+
+ about its data.
+ You can let the view access the document's data members directly, or you
+ can provide member functions in the document class for the view class to
+ call.
+\end_layout
+
+\begin_layout Standard
+When a document's data changes, the view responsible for the changes typically
+ calls the CDocument::UpdateAllViews function for the document, which notifies
+ all the other views by calling the OnUpdate member function for each.
+ The default implementation of OnUpdate invalidates the view's entire client
+ area.
+ You can override it to invalidate only those regions of the client area
+ that map to the modified portions of the document.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+LibCURL für den Netzwerkzugriff benutzen
+\end_layout
+
+\begin_layout Itemize
+Designdetails:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Das Document erzeugt einen Worker-Thread (in der Klasse ADSBThread), der
+ den ADS-B Rohdatenstrom von der Netzwerkschnittstelle liest.
+\end_layout
+
+\begin_layout Itemize
+Der Rohdatenstrom kommt in Blöcken variabler Länge an.
+ Die enthaltenden Informationen erstrecken sich evtl.
+ über die Blockgrenzen hinweg.
+ Dies muss beim Parsen (in der Klasse CombineChunks) berücksichtigt werden
+ um keine Informationen zu verlieren.
+\end_layout
+
+\begin_layout Itemize
+Nach jedem neu ankommenden Chunk des Rohdatenstromes werden die darin enthaltene
+n Rawmessages geparst, d.h.
+ in Zeitmarken und Rawmessages zerlegt, und in einer Queue des Documents
+ gespeichert.
+ Alle empfangenen ADS-B Messages sind in dieser Queue persistent.
+\end_layout
+
+\begin_layout Itemize
+Die Klasse ADSBThread erbt von der Parser-Klasse CombineChunks.
+\end_layout
+
+\begin_layout Itemize
+Die neu ankommenden ADS-B Messages werden mit der Message ADSB_MESSAGE_ID
+ zum View-Window gesendet, dort mit OnUser() empfangen, und visualisiert.
+ 
+\end_layout
+
+\begin_layout Itemize
+Dazu wird die View von CListView abgeleitet und mittels der AddItem-Methode
+ die neuen Queueelemente hinzugefügt.
+\end_layout
+
+\begin_layout Itemize
+Um Speicherlecks beim Beenden der Applikation zu vermeiden, wird dem Thread
+ im Destructor des Documents signalisiert, dass er sich beenden soll (durch
+ setzten von loopBreak=true) dann wird auf das Event threadFinished gewartet.
+\end_layout
+
+\begin_layout Itemize
+Dekodierung der ADS-B Rawmessages: siehe 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Softwaretest: Die pufferübergreifende Auswertung der Informationsblöcke
+ ist komplex.
+ Zum Test habe ich ein Tool geschrieben: ADSBTest.
+ Dieses Tool könnte auch für die Empfangsseite genutzt werden.
+\end_layout
+
+\begin_layout Subsection*
+To-Do
+\end_layout
+
+\begin_layout Itemize
+Statusinformation (z.Z.
+ nur ParityError) an die ViewCtrl-Items binden und visualisieren.
+\end_layout
+
+\begin_layout Subsection*
+Analyse rtl-adsb
+\end_layout
+
+\begin_layout Itemize
+Die Samplezeit ist 0.5 
+\begin_inset Formula $\mu s$
+\end_inset
+
+, die Sampleauflösung ist 8 Bit.
+\end_layout
+
+\begin_layout Itemize
+Die Sampledaten vom Demodulator kommen in einem Byte-Puffer der Länge 16
+ * 16384 = 262144 an.
+\end_layout
+
+\begin_layout Itemize
+Jeder Samplezeitpunkt wird durch 2 Bytes beschrieben: i und q.
+\end_layout
+
+\begin_layout Itemize
+1.
+ Schritt: die beiden Bytes in ein Wort wandeln: 
+\begin_inset Formula $i^{2}+q^{2}$
+\end_inset
+
+.
+ Die Länge des Puffers reduziert sich dadurch auf 131072 Worte.
+\end_layout
+
+\begin_layout Itemize
+Funktion manchester():
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Die Wörter der Puffers werden nacheinander daraufhin untersucht, ob sie
+ eine 8
+\begin_inset Formula $\mu s$
+\end_inset
+
+ , d.h.
+ 16 Worte lange Präambel 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+literal "false"
+
+\end_inset
+
+ enthalten.
+\end_layout
+
+\begin_layout Itemize
+Die Präambel ist durch folgende Bit-Abfolge definiert: 1010000101000000,
+ d.h.
+ die Bits 0,2,7 und 9 müssen 1 sein, der Rest 0.
+\end_layout
+
+\begin_layout Itemize
+Diese Prüfung wird durch die Funktion preamble() vorgenommen.
+ Eine 1 wird returnt, falls eine Präambel gefunden wurde, sonst 0.
+\end_layout
+
+\begin_layout Itemize
+Zum Testen der Funktionalität habe ich 2 Dateien generiert: Rawmessages
+ in Textform 
+\begin_inset Quotes eld
+\end_inset
+
+ADSB-Messages.txt
+\begin_inset Quotes erd
+\end_inset
+
+ und die dazugehörigen binären Rohsamples 
+\begin_inset Quotes eld
+\end_inset
+
+ADSB-Dump.bin
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Die beiden Dateien befinden sich im Verzeichnis Projekte/rtl-sdr.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+ADS-B Datenformate
+\end_layout
+
+\begin_layout Itemize
+Downlink Format
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="17" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Details
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Short air-air surveillance, Airborne Collision Avoidance System (ACAS),
+ Traffic Alert and Collision Avoidance System (TCAS)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1-3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reserviert
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Antworten auf Abfragen von bodengestützten Sekundärradaranlagen, Surveillance
+ altitude
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Antworten auf Abfragen von bodengestützten Sekundärradaranlagen, Surveillance
+ ident
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6-10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reserviert
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+All-Call Reply (Acq.
+ Squitter if II=0)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12-15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reserviert
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Long air-air surveillance (ACAS)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+17
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Extended Squitter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+18
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Extended Squitter, supplementary
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+19
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Militärischer Extended Squitter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comm-B, Mode-S EHS, Altitude
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+21
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comm-B, Mode-S EHS, Ident
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+22
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+militärisch genutzt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+23
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reserviert
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comm-D Extended Length Message (ELM), Format siehe 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+literal "false"
+
+\end_inset
+
+https://osmocom.org/projects/rtl-sdr/wiki
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+literal "false"
+
+\end_inset
+
+https://github.com/watson/libmodes
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+https://www.radartutorial.eu/13.ssr/sr24.de.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-4"
+
+\end_inset
+
+https://github.com/junzis/pyModeS/blob/master/pyModeS/decoder/common.py
+\end_layout
+
+\end_body
+\end_document
