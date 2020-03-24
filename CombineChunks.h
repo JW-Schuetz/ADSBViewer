@@ -8,6 +8,9 @@ class CombineChunks
 {
 	static char* rest;
 	static int counter;
+	static char* lastRawMessage;	// Doubletten-Erkennung
+	static int OKcounter;			// Statistik Parityzähler
+	static int NOTOKcounter;
 
 	// Bitmasken für Decodierung
 	static BitMask maskDF;			// Downlink-Format (ADS-B: 17 oder 18)
@@ -17,12 +20,14 @@ class CombineChunks
 	static BitMask maskTC;			// Type Code für DF17 oder DF18
 	static BitMask maskPI;			// Parität für DF17 oder DF18
 
-	static BitMask maskMB;			// MB für DF20,DF21
 	static BitMask maskAP;			// AP/DP für DF20,DF21
+	static BitMask maskMB;			// MB für DF20,DF21
+	static BitMask maskBDS2;		// BDS2 für DF20,DF21
 
 private:
+	static uint32_t parity(ADSBLongBitset);
 	static uint32_t checkParity(BYTE*,int);
-	static void checkParity(ADSBLongBitset, ADSBMessageState&);
+	static uint32_t checkParity(ADSBLongBitset, ADSBMessageState&);
 	static int processMessage(char*, char*);
 	static char* duplicateBuffer(char*);
 	static char* detectRawMessages(char*);
@@ -31,14 +36,15 @@ private:
 	static BYTE* bitsToBin(ADSBLongBitset);
 	static string reveseStringBytes(string);
 	static string reveseStringNibbles(string);
-	static string decodeAircraftID(ADSBLongBitset);
+	static string decodeAircraftIDs(ADSBLongBitset);
 	static ADSBMessageTypeCode typeCode(ADSBLongBitset);
-	static void decodeDF17Message(ADSBLongBitset, ADSBMessageState&, ADSBMessageCode, 
+	static void decodeDF17Message(ADSBLongBitset, ADSBMessageCode, ADSBMessageState&, 
 		unsigned long&, unsigned char&, string&);
-	static void decodeDF20Message(ADSBLongBitset, ADSBMessageState&, ADSBMessageCode);
+	static void decodeDF20Message(ADSBLongBitset, ADSBMessageCode, ADSBMessageState&, string&);
 	static void decodeMessage(string, ADSBMessageState&, unsigned long&, ADSBMessageCode&,
-		unsigned long&, unsigned char&, string&);
-	static string* decodedString(ADSBMessageState, unsigned long, ADSBMessageCode, unsigned long, unsigned char, string);
+		unsigned long&, unsigned char&, string&, string&);
+	static string* decodedMessage(ADSBMessageState, unsigned long, ADSBMessageCode, unsigned long, 
+		unsigned char, string, string);
 
 protected:
 	CombineChunks(ADSBData*, ICAOData*);

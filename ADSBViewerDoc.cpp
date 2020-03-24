@@ -29,17 +29,7 @@ void CADSBViewerDoc::eraseQueue()
 {
 	// alle Elemente freigeben
 	for (ADSBData::iterator it = rawQueue.begin(); it != rawQueue.end(); ++it)
-	{
-		delete (*it).timeMark;
-		delete (*it).rawMessage;
-		delete (*it).decodedMessage;
-		delete (*it).code;
-		delete (*it).icao;
-		delete (*it).state;
-	}
-
-	// alle Elemente löschen
-	rawQueue.erase(rawQueue.begin(), rawQueue.end());
+		(*it).DeleteContent();
 }
 
 BOOL CADSBViewerDoc::OnNewDocument()

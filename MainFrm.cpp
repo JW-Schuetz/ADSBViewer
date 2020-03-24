@@ -15,7 +15,6 @@
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
-	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -35,13 +34,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.style = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE;
 
 	return TRUE;
-}
-
-void CMainFrame::OnClose()
-{
-	// TODO: Add your message handler code here and/or call default
-
-	CFrameWnd::OnClose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

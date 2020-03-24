@@ -32,7 +32,7 @@
 \spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -57,6 +57,10 @@
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 1cm
+\bottommargin 2cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation skip
@@ -289,15 +293,6 @@ Softwaretest: Die pufferübergreifende Auswertung der Informationsblöcke
 \end_layout
 
 \begin_layout Subsection*
-To-Do
-\end_layout
-
-\begin_layout Itemize
-Statusinformation (z.Z.
- nur ParityError) an die ViewCtrl-Items binden und visualisieren.
-\end_layout
-
-\begin_layout Subsection*
 Analyse rtl-adsb
 \end_layout
 
@@ -385,15 +380,14 @@ ADSB-Dump.bin
 \end_layout
 
 \end_deeper
-\begin_layout Subsection*
-ADS-B Datenformate
+\begin_layout Section*
+ADS-B Datenformatbeschreibung
 \end_layout
 
-\begin_layout Itemize
-Downlink Format
+\begin_layout Standard
+Es gibt die folgenden Downlink Formate:
 \end_layout
 
-\begin_deeper
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="17" columns="2">
@@ -401,7 +395,7 @@ Downlink Format
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -414,14 +408,14 @@ DF
 \begin_inset Text
 
 \begin_layout Plain Layout
-Details
+Beschreibung
 \end_layout
 
 \end_inset
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -434,15 +428,15 @@ Details
 \begin_inset Text
 
 \begin_layout Plain Layout
-Short air-air surveillance, Airborne Collision Avoidance System (ACAS),
- Traffic Alert and Collision Avoidance System (TCAS)
+Airborne Collision Avoidance System (ACAS), Traffic Alert and Collision
+ Avoidance System (TCAS)
 \end_layout
 
 \end_inset
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -462,7 +456,7 @@ Reserviert
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -483,7 +477,7 @@ Antworten auf Abfragen von bodengestützten Sekundärradaranlagen, Surveillance
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -504,7 +498,7 @@ Antworten auf Abfragen von bodengestützten Sekundärradaranlagen, Surveillance
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -524,7 +518,7 @@ Reserviert
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -545,7 +539,7 @@ All-Call Reply (Acq.
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -565,7 +559,7 @@ Reserviert
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -585,7 +579,7 @@ Long air-air surveillance (ACAS)
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -605,7 +599,7 @@ Extended Squitter
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -625,7 +619,7 @@ Extended Squitter, supplementary
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -645,7 +639,7 @@ Militärischer Extended Squitter
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -665,7 +659,7 @@ Comm-B, Mode-S EHS, Altitude
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -685,7 +679,7 @@ Comm-B, Mode-S EHS, Ident
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -705,7 +699,7 @@ militärisch genutzt
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -725,7 +719,7 @@ Reserviert
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -759,7 +753,892 @@ literal "false"
 
 \end_layout
 
-\end_deeper
+\begin_layout Subsection*
+Parity Coding
+\end_layout
+
+\begin_layout Standard
+Für ADS-B wird ein pseudo-zyklischer Code zur Bestimmung der Parität benutzt.
+ 
+\end_layout
+
+\begin_layout Standard
+Das Generatorpolynom dieses Codes ist durch 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-5"
+literal "false"
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+G\left(x\right)=x^{24}+x^{23}+x^{22}+x^{21}+x^{20}+x^{19}+x^{18}+x^{17}+x^{16}+x^{15}+x^{14}+x^{13}+x^{12}+x^{10}+x^{3}+x
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+gegeben, es gilt 
+\begin_inset Formula $x\in\varPi$
+\end_inset
+
+ mit der Menge 
+\begin_inset Formula $\varPi=\left\{ 0,1\right\} .$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Körper
+\end_layout
+
+\begin_layout Standard
+Um mathematische Erkenntnisse über Polynome nutzen zu können, muss der Menge
+ 
+\begin_inset Formula $\varPi$
+\end_inset
+
+ ein Körper zugeordnet werden.
+ Dies soll hier versucht werden.
+\end_layout
+
+\begin_layout Subsection*
+Polynom-Multiplikation/Division
+\end_layout
+
+\begin_layout Standard
+Es werden die Zusammenhänge aus 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-6"
+literal "false"
+
+\end_inset
+
+ zusammengefasst, dabei sind leere Matrixelemente als 0 zu interpretieren.
+\end_layout
+
+\begin_layout Standard
+Die Menge der Polynome über dem Körper 
+\begin_inset Formula $K$
+\end_inset
+
+ und des Grades 
+\begin_inset Formula $n$
+\end_inset
+
+ sei gegeben durch 
+\begin_inset Formula $P_{n}=\left\{ a_{0}+a_{1}x+\cdots+a_{n}x^{n},x\in K\right\} .$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Multiplikation der Elemente 
+\begin_inset Formula $f\left(x\right)\in P_{n}$
+\end_inset
+
+ mit einem Polynom 
+\begin_inset Formula $p\left(x\right)=p_{0}+p_{1}x+\cdots+p_{m}x^{m}$
+\end_inset
+
+ des Grades 
+\begin_inset Formula $m$
+\end_inset
+
+ bildet eine lineare Abbildung 
+\begin_inset Formula $M$
+\end_inset
+
+ von 
+\begin_inset Formula $P_{n}\left(x\right)$
+\end_inset
+
+ auf 
+\begin_inset Formula $P_{n+m}\left(x\right)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Die Koeffizienten 
+\begin_inset Formula $\underline{b}=\left(b_{0},\cdots,b_{n+m}\right)^{T}$
+\end_inset
+
+ des Produkt-Polynoms 
+\begin_inset Formula 
+\[
+\left(fp\right)\left(x\right)=\left(pf\right)\left(x\right)=b_{0}+b_{1}x+\cdots b_{n+m}x^{n+m}
+\]
+
+\end_inset
+
+ ergeben sich zu 
+\begin_inset Formula $\underline{b}=M\underline{a}$
+\end_inset
+
+ mit dem Vektor 
+\begin_inset Formula $\underline{a}=\left(a_{0},\cdots,a_{n}\right)^{T}$
+\end_inset
+
+ und der 
+\begin_inset Formula $\left(\left(n+m+1\right)\times\left(n+1\right)\right)$
+\end_inset
+
+-Abbildungsmatrix (Multiplikationsmatrix) 
+\begin_inset Formula 
+\[
+M=\left(\begin{array}{ccccc}
+p_{0}\\
+\vdots & p_{0}\\
+p_{m-1} & \vdots & p_{0}\\
+p_{m} & p_{m-1} & \vdots & \ddots\\
+ & p_{m} & p_{m-1} &  & p_{0}\\
+ &  & p_{m} & \ddots & \vdots\\
+ &  &  & \ddots & p_{m-1}\\
+ &  &  &  & p_{m}
+\end{array}\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Definiert man die für 
+\begin_inset Formula $p_{m}\neq0$
+\end_inset
+
+ nichtsinguläre 
+\begin_inset Formula $\left(\left(n+m+1\right)\times\left(n+m+1\right)\right)$
+\end_inset
+
+-Matrix (Divisionsmatrix) 
+\begin_inset Formula 
+\[
+D=\left(\begin{array}{cccccccc}
+1 &  &  & p_{0}\\
+ & \ddots &  & \vdots & p_{0}\\
+ &  & 1 & p_{m-1} & \vdots & p_{0}\\
+ &  &  & p_{m} & p_{m-1} & \vdots & \ddots\\
+ &  &  &  & p_{m} & p_{m-1} &  & p_{0}\\
+ &  &  &  &  & p_{m} & \ddots & \vdots\\
+ &  &  &  &  &  & \ddots & p_{m-1}\\
+ &  &  &  &  &  &  & p_{m}
+\end{array}\right),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so gilt mit der Matrix 
+\begin_inset Formula 
+\[
+A=\left(\begin{array}{ccc}
+1\\
+ & \ddots\\
+ &  & 1\\
+\\
+\\
+\end{array}\right)
+\]
+
+\end_inset
+
+und dem Vektor 
+\begin_inset Formula $\underline{r}=\left(r_{0},\cdots,r_{m-1}\right)^{T}$
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+D\left(\begin{array}{c}
+\underline{r}\\
+\underline{a}
+\end{array}\right)=\left(A,M\right)\left(\begin{array}{c}
+\underline{r}\\
+\underline{a}
+\end{array}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+DF17/DF18
+\end_layout
+
+\begin_layout Subsection*
+DF20/DF21
+\end_layout
+
+\begin_layout Standard
+Diese beiden Downlink-Formate sind Antworten, die von der Bodenstation aktiv
+ abgefragt werden.
+ Welche Daten übertragen werden hängen von einem BDS (Binary Data Selector)
+ ab, der aber nicht in der Antwort enthalten ist.
+ 
+\end_layout
+
+\begin_layout Standard
+Es gibt die folgenden BDS-Codecs:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDS 2,0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Aircraft identification
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDS 2,1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Aircraft and airline registration markings
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDS 4,0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Selected vertical intention
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDS 4,4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meteorological routine air report
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDS 5,0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Track and turn report
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDS 6,0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Heading and speed report
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Die DF20/21 Messages sind wie folgt strukturiert:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bezeichnung
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bedeutung
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Downlink Format
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+FS
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Flight Status
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DR
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Downlink Request
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UM
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Utility Message
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AC/ID
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+13
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Altitude Code (DF20) or Identity (DF21)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+56
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comm-B Message
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AP/DP
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Address Parity/Data Parity
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Aircraft identification BDS 2,0
+\end_layout
+
+\begin_layout Standard
+Das Comm-B Messagefeld MB hat die folgende Struktur:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="10">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Inhalt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Die jeweils 6 Bits 
+\begin_inset Formula $b_{n},\quad n=0,\cdots,5$
+\end_inset
+
+ eines Zeichens 
+\begin_inset Formula $C_{m}=\left(b_{5},\cdots,b_{0}\right),\quad m=1,\cdots,8$
+\end_inset
+
+ werden als 0-basierter Index 
+\begin_inset Formula $\sum_{n=0}^{5}\left(2^{n}b_{n}\right)$
+\end_inset
+
+ in die folgende Lookup-Tabelle interpretiert:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####
+\begin_inset space \textvisiblespace{}
+\end_inset
+
+###############0123456789######
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Das #-Zeichen bezeichnet einen ungültigen Index, das 
+\begin_inset space \textvisiblespace{}
+\end_inset
+
+-Zeichen ist das Leerzeichen.
+\end_layout
+
+\begin_layout Standard
+Man erhält die Aircraft Identification die Zeichenkette C8,C7,C6,C5,C4,C3,C2,C1.
+\end_layout
+
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
@@ -800,6 +1679,31 @@ key "key-4"
 \end_inset
 
 https://github.com/junzis/pyModeS/blob/master/pyModeS/decoder/common.py
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-5"
+literal "false"
+
+\end_inset
+
+Fundamentals of Mode S Parity Coding; J.
+ L.
+ Gertz; Project Report ATC-117
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-6"
+literal "false"
+
+\end_inset
+
+Polynomial GCDs by Linear Algebra; Barry Dayton; Northeastern Illinois Universit
+y; March 2004
 \end_layout
 
 \end_body

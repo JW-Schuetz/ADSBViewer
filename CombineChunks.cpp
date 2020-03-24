@@ -11,6 +11,10 @@
 // Deklaration der static class members
 char* CombineChunks::rest;
 int CombineChunks::counter;
+char* CombineChunks::lastRawMessage;
+int CombineChunks::OKcounter;			// Statistik Parityzähler
+int CombineChunks::NOTOKcounter;
+
 ADSBData* CombineChunks::rawQueue;
 ICAOData* CombineChunks::icaoData;
 
@@ -20,13 +24,17 @@ BitMask CombineChunks::maskICAO;		// FlugzeugID
 BitMask CombineChunks::maskDATA;		// Daten
 BitMask CombineChunks::maskTC;			// Type Code
 BitMask CombineChunks::maskPI;			// Parität
-BitMask CombineChunks::maskMB;			// MB für DF20,DF21
 BitMask CombineChunks::maskAP;			// AP/DP für DF20,DF21
+BitMask CombineChunks::maskMB;			// MB für DF20,DF21
+BitMask CombineChunks::maskBDS2;		// BDS2 für DF20,DF21
 
 CombineChunks::CombineChunks(ADSBData* rawQueue, ICAOData* icaoData)
 {
 	rest = NULL;
 	counter = 0;
+	lastRawMessage = "";
+	OKcounter = 0;
+	NOTOKcounter = 0;
 	this->rawQueue = rawQueue;
 	this->icaoData = icaoData;
 
@@ -38,8 +46,41 @@ CombineChunks::CombineChunks(ADSBData* rawQueue, ICAOData* icaoData)
 	maskTC = BitMask(5, 75);		// Type Code für DF17 oder DF18
 	maskPI = BitMask(24, 0);		// Parität für DF17 oder DF18
 
-	maskMB = BitMask(56, 24);		// MB für DF20,DF21
 	maskAP = BitMask(24, 0);		// AP/DP für DF20,DF21
+	maskMB = BitMask(56, 24);		// MB für DF20,DF21
+	maskBDS2 = BitMask(8, 48);		// BDS2 für DF20,DF21
+}
+
+uint32_t CombineChunks::parity(ADSBLongBitset rawMessageBits)
+{
+	//	For i = GradZ - GradN To 0 Step - 1
+	//		Quotient(i) = Zähler(i + GradN) / Nenner(GradN)
+	//		For j = GradN To 0 Step - 1
+	//			Zähler(i + j) = Zähler(i + j) - Nenner(j) * Quotient(i)
+	//		Next j
+	//	Next i
+	//
+	//	For j = GradN - 1 To 0 Step - 1
+	//		Rest(j) = Zähler(j)
+	//	Next j
+	//
+	//	In einem optimierten Programm würde man die innere Schleife von 0 bis(GradN - 1) laufen lassen
+	//	und die Ergebnisse in Zähler() zurückschreiben, so dass die Variablen Quotient() und Rest()
+	//	entfallen würden.Der Einfachheit halber wurde hier darauf verzichtet.
+	//
+	// siehe auch MATLAB deconv()
+	//
+	// data = [0,0,1,0,0,0,0,0,0,0,1,0,1,1,0,0,1,1,0,0,0,0,1,1,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,1,0,0,1,0,1,1,0,0,1,1,1,0,0,0,0,0];
+	// gen = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1];
+	// Division sollte ohne Rest möglich sein!
+
+
+	BYTE* buffer = bitsToBin(rawMessageBits);
+
+	char* genString = "1111111111111010000001001";
+	ADSBLongBitset generator(genString);
+
+	return 0;
 }
 
 uint32_t CombineChunks::checkParity(BYTE* msg, int bits)
@@ -74,6 +115,7 @@ uint32_t CombineChunks::checkParity(BYTE* msg, int bits)
 		if (msg[byte] & bitmask)
 			crc ^= mode_s_checksum_table[j + offset];
 	}
+
 	return crc; // 24 bit checksum.
 }
 
@@ -210,19 +252,21 @@ BYTE* CombineChunks::bitsToBin(ADSBLongBitset bits)
 	return buffer;
 }
 
-void CombineChunks::checkParity(ADSBLongBitset rawMessageBits, ADSBMessageState& state)
+uint32_t CombineChunks::checkParity(ADSBLongBitset rawMessageBits, ADSBMessageState& state)
 {
 	ADSBLongBitset Parity = maskPI.Apply(rawMessageBits);
-	long int parity = Parity.to_ulong();
+	long int parityMessage = Parity.to_ulong();
 
 	BYTE* buffer = bitsToBin(rawMessageBits);
-	uint32_t parityBODY = checkParity(buffer, rawMessageBits.size());
+	uint32_t parityCalculated = checkParity(buffer, rawMessageBits.size());
 	delete[] buffer;
 
-	if (parityBODY == parity)
+	if (parityCalculated == parityMessage)
 		state = ADSBMessageState::OK;
 	else
 		state = ADSBMessageState::Parity;
+
+	return parityCalculated;
 }
 
 ADSBMessageTypeCode CombineChunks::typeCode(ADSBLongBitset TC)
@@ -244,10 +288,10 @@ ADSBMessageTypeCode CombineChunks::typeCode(ADSBLongBitset TC)
 	return typeCode;
 }
 
-string CombineChunks::decodeAircraftID(ADSBLongBitset DATA)
+string CombineChunks::decodeAircraftIDs(ADSBLongBitset DATA)
 {
-	// Jeweils 6 Bits codieren ein Zeichen der ID, Lookup-Tabelle
-	const char* lookup = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######";
+	// Jeweils 6 Bits codieren ein Zeichen der ID (DF17/18) oder Identification (DF20/21), Lookup-Tabelle
+	const char* lookup = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######";
 
 	int len = 8;		// fix: 8 Zeichen
 	char* buffer = new char[len + 1];
@@ -275,22 +319,22 @@ string CombineChunks::decodeAircraftID(ADSBLongBitset DATA)
 	return ret;
 }
 
-void CombineChunks::decodeDF17Message(ADSBLongBitset rawMessageBits, ADSBMessageState& state, 
-	ADSBMessageCode code, unsigned long& icao, unsigned char& ca, string& airCraftID)
+void CombineChunks::decodeDF17Message(ADSBLongBitset rawMessageBits, ADSBMessageCode code, 
+	ADSBMessageState& state, unsigned long& icao, unsigned char& ca, string& airCraftID)
 {
+	checkParity(rawMessageBits, state);
+
 	ADSBLongBitset CA = maskCA.Apply(rawMessageBits);
 	ADSBLongBitset ICAO = maskICAO.Apply(rawMessageBits);
 	ADSBLongBitset DATA = maskDATA.Apply(rawMessageBits);
 	ADSBLongBitset TC = maskTC.Apply(rawMessageBits);
-
-	checkParity(rawMessageBits, state);
 
 	// Auswertung Type Code
 	ADSBMessageTypeCode tc = typeCode(TC);
 	switch (tc)
 	{
 	case ADSBMessageTypeCode::AircraftID:
-		airCraftID = decodeAircraftID(DATA);
+		airCraftID = decodeAircraftIDs(DATA);
 		break;
 	case ADSBMessageTypeCode::SurfacePos:
 		break;
@@ -314,14 +358,29 @@ void CombineChunks::decodeDF17Message(ADSBLongBitset rawMessageBits, ADSBMessage
 	icao = ICAO.to_ulong();
 }
 
-void CombineChunks::decodeDF20Message(ADSBLongBitset rawMessageBits, ADSBMessageState& state, ADSBMessageCode code)
+void CombineChunks::decodeDF20Message(ADSBLongBitset rawMessageBits, ADSBMessageCode code, ADSBMessageState& state, 
+	string& airCraftIdentification)
 {
+	// ICAO bestimmen
+	ADSBLongBitset parity = maskPI.Apply(rawMessageBits);
+	long int parityMessage = parity.to_ulong();
+
+	ADSBMessageState stateLocal;
+	long int parityCalculated = checkParity(rawMessageBits, stateLocal);
+
+	// Aircraft-Identification bestimmen
 	ADSBLongBitset MB = maskMB.Apply(rawMessageBits);
-	ADSBLongBitset AP = maskAP.Apply(rawMessageBits);
+	ADSBLongBitset BDS2 = maskBDS2.Apply(MB);
+	switch (BDS2.to_ulong())
+	{
+	case 0x20:
+		airCraftIdentification = decodeAircraftIDs(MB);
+		break;
+	}
 }
 
 void CombineChunks::decodeMessage(string raw, ADSBMessageState& state, unsigned long& df,
-	ADSBMessageCode& code, unsigned long& icao, unsigned char& ca, string& airCraftID)
+	ADSBMessageCode& code, unsigned long& icao, unsigned char& ca, string& airCraftID, string& airCraftIdentification)
 {
 	state = ADSBMessageState::Unknown;
 
@@ -343,19 +402,19 @@ void CombineChunks::decodeMessage(string raw, ADSBMessageState& state, unsigned 
 		break;
 	case 17:		// Extended Squitter
 		code = ADSBMessageCode::DF17;
-		decodeDF17Message(rawMessageBits, state, code, icao, ca, airCraftID);
+		decodeDF17Message(rawMessageBits, code, state, icao, ca, airCraftID);
 		break;
 	case 18:		// Extended Squitter
 		code = ADSBMessageCode::DF18;
-		decodeDF17Message(rawMessageBits, state, code, icao, ca, airCraftID);
+		decodeDF17Message(rawMessageBits, code, state, icao, ca, airCraftID);
 		break;
 	case 20:		// Comm-B, Mode-S EHS, Altitude
 		code = ADSBMessageCode::DF20;
-		decodeDF20Message(rawMessageBits, state, code);
+		decodeDF20Message(rawMessageBits, code, state, airCraftIdentification);
 		break;
 	case 21:		// Comm-B, Mode-S EHS, Ident
 		code = ADSBMessageCode::DF21;
-		decodeDF20Message(rawMessageBits, state, code);
+		decodeDF20Message(rawMessageBits, code, state, airCraftIdentification);
 		break;
 	case 24:		// Comm-D Extended Length Message (ELM)
 		code = ADSBMessageCode::DF24;
@@ -366,8 +425,8 @@ void CombineChunks::decodeMessage(string raw, ADSBMessageState& state, unsigned 
 	}
 }
 
-string* CombineChunks::decodedString(ADSBMessageState state, unsigned long df, ADSBMessageCode code,
-	unsigned long icao, unsigned char ca, string airCraftID)
+string* CombineChunks::decodedMessage(ADSBMessageState state, unsigned long df, ADSBMessageCode code,
+	unsigned long icao, unsigned char ca, string airCraftID, string airCraftIdentification)
 {
 	string ret;
 
@@ -445,6 +504,12 @@ string* CombineChunks::decodedString(ADSBMessageState state, unsigned long df, A
 		ret += airCraftID;
 	}
 
+	if (airCraftIdentification.size() != 0)
+	{
+		ret += "  ID: ";
+		ret += airCraftIdentification;
+	}
+
 	return new string(ret);
 }
 
@@ -484,27 +549,43 @@ int CombineChunks::processMessage(char* s1, char* s2)
 	strncpy_s(rawMsg, lenRawMsg + 1, str1, lenRawMsg);
 	*(rawMsg + lenRawMsg) = 0;
 
-	// Eintrag in Message-Liste
-	ADSBMessage row;
-	unsigned char ca = 0;
-	unsigned long icao = 0;
-	unsigned long df = 0;
-	string airCraftID;
-	ADSBMessageCode code;
-	ADSBMessageState state;
+	// Doubletten im Eingangsdatenstrom ignorieren (unklar warum die auftreten)
+	if (strcmp(lastRawMessage, rawMsg) != 0)
+	{
+		lastRawMessage = rawMsg;
 
-	// Raw-Message decodieren
-	decodeMessage(rawMsg, state, df, code, icao, ca, airCraftID);
+		// Eintrag in Message-Liste
+		unsigned char ca = 0;
+		unsigned long icao = 0;
+		unsigned long df = 0;
+		string airCraftID;
+		string airCraftIdentification;
+		ADSBMessageCode code;
+		ADSBMessageState state;
 
-	row.timeMark = new string(timeStamp);
-	row.rawMessage = new string(rawMsg);
-	row.decodedMessage = decodedString(state, df, code, icao, ca, airCraftID);
-	row.code = new ADSBMessageCode(code);
-	row.icao = new unsigned long(icao);
-	row.state = new ADSBMessageState(state);
+		// Raw-Message decodieren
+		decodeMessage(rawMsg, state, df, code, icao, ca, airCraftID, airCraftIdentification);
 
-	rawQueue->push_back(row);
-	if (icao != 0) icaoData->insert(pair(icao, rawMsg));	// hier noch alle bekannten Daten sammeln
+		// Statistik Parityfehler
+		if (state == ADSBMessageState::OK) ++OKcounter;
+		if (state == ADSBMessageState::Parity) ++NOTOKcounter;
+
+		if (code != ADSBMessageCode::DF0)	// keine DF0 Messages eintragen
+		{
+			ADSBMessage row;
+
+			row.timeMark = new string(timeStamp);
+			row.rawMessage = new string(rawMsg);
+			row.decodedMessage = decodedMessage(state, df, code, icao, ca, airCraftID, airCraftIdentification);
+			row.code = new ADSBMessageCode(code);
+			row.icao = new unsigned long(icao);
+			row.state = new ADSBMessageState(state);
+
+			rawQueue->push_back(row);
+
+			if (icao != 0) icaoData->insert(pair(icao, rawMsg));	// TODO: unter der icao die Daten aller Messages sammeln
+		}
+	}
 
 	delete[] timeStamp;
 	delete[] rawMsg;

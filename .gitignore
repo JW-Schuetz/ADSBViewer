@@ -5,3 +5,8 @@
 /MICA-MID - WP 02 - Mode S Surveillance Principle.pdf
 /ICAO-Annex-10-Volume-4-Surveillance-and-Collision-Avoidance.pdf
 /Fundamentals of mode s parity coding.pdf
+*.lyx~
+/#ADS-B Viewer.lyx#
+/Debug/ADSBViewerNew.tlog/unsuccessfulbuild
+*.m
+/TextFile1.txt

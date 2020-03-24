@@ -27,6 +27,28 @@ typedef struct ADSBStruct
 	unsigned long *icao;
 	ADSBMessageCode* code;
 	ADSBMessageState* state;
+
+	// Konstruktor
+	ADSBStruct()
+	{
+		timeMark = NULL;
+		rawMessage = NULL;
+		decodedMessage = NULL;
+		code = NULL;
+		icao = NULL;
+		state = NULL;
+	}
+
+	// Destruktor
+	void DeleteContent()
+	{
+		delete timeMark;
+		delete rawMessage;
+		delete decodedMessage;
+		delete code;
+		delete icao;
+		delete state;
+	}
 } ADSBMessage;
 
 typedef vector<ADSBMessage> ADSBData;

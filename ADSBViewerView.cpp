@@ -56,25 +56,24 @@ void CADSBViewerView::OnInitialUpdate()
 	// ListCtrl initialisieren
 	CListCtrl& listCtrl = GetListCtrl();
 
-	CFont font;
-	font.CreateFont(
-		0,							// Height
-		0,							// Width
-		0,							// Escapement
-		0,							// Orientation
-		FW_NORMAL,					// Weight
-		FALSE,						// Italic
-		FALSE,						// Underline
-		0,							// StrikeOut
-		DEFAULT_CHARSET,			// CharSet
-		OUT_DEFAULT_PRECIS,			// OutPrecision
-		CLIP_CHARACTER_PRECIS,		// ClipPrecision
-		ANTIALIASED_QUALITY,		// Quality
-		DEFAULT_PITCH,				// PitchAndFamily
-		L"Arial"					// Facename
-	);
-
-	CFont *pFont = listCtrl.GetFont();
+	//CFont font;
+	//font.CreateFont(
+	//	0,							// Height
+	//	0,							// Width
+	//	0,							// Escapement
+	//	0,							// Orientation
+	//	FW_NORMAL,					// Weight
+	//	FALSE,						// Italic
+	//	FALSE,						// Underline
+	//	0,							// StrikeOut
+	//	DEFAULT_CHARSET,			// CharSet
+	//	OUT_DEFAULT_PRECIS,			// OutPrecision
+	//	CLIP_CHARACTER_PRECIS,		// ClipPrecision
+	//	ANTIALIASED_QUALITY,		// Quality
+	//	DEFAULT_PITCH,				// PitchAndFamily
+	//	L"Consolas"					// Facename
+	//);
+	//listCtrl.SetFont(&font);
 
 	listCtrl.SetItemCount(ITEM_COUNT);			// es werden evtl. viele Items
 	listCtrl.SetTextColor(RGB(255, 255, 255));	// weisser Text auf schwarzem Hintergrund
