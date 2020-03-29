@@ -192,6 +192,7 @@
     <ClInclude Include="ADSBViewer.h" />
     <ClInclude Include="ADSBViewerDoc.h" />
     <ClInclude Include="ADSBViewerView.h" />
+    <ClInclude Include="BinPoly.h" />
     <ClInclude Include="BitMask.h" />
     <ClInclude Include="CombineChunks.h" />
     <ClInclude Include="Common.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="ADSBViewer.cpp" />
     <ClCompile Include="ADSBViewerDoc.cpp" />
     <ClCompile Include="ADSBViewerView.cpp" />
+    <ClCompile Include="BinPoly.cpp" />
     <ClCompile Include="BitMask.cpp" />
     <ClCompile Include="CombineChunks.cpp" />
     <ClCompile Include="ExitDialog.cpp" />
@@ -228,7 +230,6 @@
     <Image Include="res\ADSBViewerDoc.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ADS-B Viewer.lyx" />
     <None Include="res\ADSBViewer.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

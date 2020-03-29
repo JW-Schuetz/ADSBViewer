@@ -4,6 +4,7 @@
 #include <exception>
 
 #include "CombineChunks.h"
+#include "BinPoly.h"
 
 
 #define ITOA_BUFFER_SIZE 10
@@ -53,32 +54,24 @@ CombineChunks::CombineChunks(ADSBData* rawQueue, ICAOData* icaoData)
 
 uint32_t CombineChunks::parity(ADSBLongBitset rawMessageBits)
 {
-	//	For i = GradZ - GradN To 0 Step - 1
-	//		Quotient(i) = Zähler(i + GradN) / Nenner(GradN)
-	//		For j = GradN To 0 Step - 1
-	//			Zähler(i + j) = Zähler(i + j) - Nenner(j) * Quotient(i)
-	//		Next j
-	//	Next i
+	//	Noch zu beweisen sind die folgenden Annahmen:
+	//	---------------------------------------------
+	// 1.	Die Menge der boolschen Zahlen {0,1} erhält mit der Addition (=OR) und der Multiplikation (=AND)
+	//		die Struktur eines Körpers.
 	//
-	//	For j = GradN - 1 To 0 Step - 1
-	//		Rest(j) = Zähler(j)
-	//	Next j
+	// 2.	Die (n x n)-Matrizen M mit Rang n über diesem Körper sind ihre eigenen Inversen, d.h. es gilt M^(-1) = M.
 	//
-	//	In einem optimierten Programm würde man die innere Schleife von 0 bis(GradN - 1) laufen lassen
-	//	und die Ergebnisse in Zähler() zurückschreiben, so dass die Variablen Quotient() und Rest()
-	//	entfallen würden.Der Einfachheit halber wurde hier darauf verzichtet.
+	//		Dann kann man die Ergebnisse aus "Polynomial GCDs by Linear Algebra; Barry Dayton; 
+	//		Northeastern Illinois University; March 2004" benutzen.
 	//
-	// siehe auch MATLAB deconv()
-	//
-	// data = [0,0,1,0,0,0,0,0,0,0,1,0,1,1,0,0,1,1,0,0,0,0,1,1,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,1,0,0,1,0,1,1,0,0,1,1,1,0,0,0,0,0];
-	// gen = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1];
-	// Division sollte ohne Rest möglich sein!
-
-
 	BYTE* buffer = bitsToBin(rawMessageBits);
+
+	BinPoly poly = BinPoly(rawMessageBits);
 
 	char* genString = "1111111111111010000001001";
 	ADSBLongBitset generator(genString);
+
+	ADSBLongBitset res = poly.Divide(generator);
 
 	return 0;
 }
@@ -254,6 +247,9 @@ BYTE* CombineChunks::bitsToBin(ADSBLongBitset bits)
 
 uint32_t CombineChunks::checkParity(ADSBLongBitset rawMessageBits, ADSBMessageState& state)
 {
+	// zum Test:
+	uint32_t ret = parity(rawMessageBits);
+
 	ADSBLongBitset Parity = maskPI.Apply(rawMessageBits);
 	long int parityMessage = Parity.to_ulong();
 
