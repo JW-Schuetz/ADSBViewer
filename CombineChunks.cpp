@@ -65,13 +65,19 @@ uint32_t CombineChunks::parity(ADSBLongBitset rawMessageBits)
 	//		Northeastern Illinois University; March 2004" benutzen.
 	//
 	BYTE* buffer = bitsToBin(rawMessageBits);
+	delete[] buffer;
 
-	BinPoly poly = BinPoly(rawMessageBits);
+	//BinPoly poly = BinPoly(rawMessageBits);
+	//ADSBLongBitset generator("1111111111111010000001001");
+	//ADSBLongBitset res = poly.Divide(generator);
 
-	char* genString = "1111111111111010000001001";
-	ADSBLongBitset generator(genString);
+	// TEST  TEST  TEST TEST  TEST  TEST TEST  TEST  TEST TEST  TEST  TEST
+	ADSBLongBitset dataExample("10110");		// x^4+x^2+x
+	ADSBLongBitset generatorExample("110");		// x^2+x
 
-	ADSBLongBitset res = poly.Divide(generator);
+	BinPoly example = BinPoly(dataExample);
+	ADSBLongBitset res = example.Divide(generatorExample);
+	// TEST  TEST  TEST TEST  TEST  TEST TEST  TEST  TEST TEST  TEST  TEST
 
 	return 0;
 }

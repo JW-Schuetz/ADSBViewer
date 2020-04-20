@@ -12,6 +12,7 @@
 #define new DEBUG_NEW
 #endif
 
+
 // CADSBViewerApp
 BEGIN_MESSAGE_MAP(CADSBViewerApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CADSBViewerApp::OnAppAbout)
@@ -19,7 +20,6 @@ BEGIN_MESSAGE_MAP(CADSBViewerApp, CWinApp)
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
-
 
 // CADSBViewerApp construction
 CADSBViewerApp::CADSBViewerApp() noexcept

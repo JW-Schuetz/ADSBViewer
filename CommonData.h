@@ -39,7 +39,6 @@ typedef struct ADSBStruct
 		state = NULL;
 	}
 
-	// Destruktor
 	void DeleteContent()
 	{
 		delete timeMark;
