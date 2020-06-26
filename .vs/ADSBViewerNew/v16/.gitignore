@@ -1,3 +1,5 @@
 *.VC.opendb
 *.VC.db
 *.suo
+*.VC.db-wal
+*.VC.db-shm
