@@ -54,12 +54,10 @@ CombineChunks::CombineChunks(ADSBData* rawQueue, ICAOData* icaoData)
 
 uint32_t CombineChunks::parity(ADSBLongBitset rawMessageBits)
 {
-	//	Noch zu beweisen sind die folgenden Annahmen:
-	//	---------------------------------------------
+	//	Die folgende Annahme ist bewiesen (ADS-B Viewer Doc.pdf):
+	//	---------------------------------------------------------
 	// 1.	Die Menge der boolschen Zahlen {0,1} erhält mit der Addition (=OR) und der Multiplikation (=AND)
 	//		die Struktur eines Körpers.
-	//
-	// 2.	Die (n x n)-Matrizen M mit Rang n über diesem Körper sind ihre eigenen Inversen, d.h. es gilt M^(-1) = M.
 	//
 	//		Dann kann man die Ergebnisse aus "Polynomial GCDs by Linear Algebra; Barry Dayton; 
 	//		Northeastern Illinois University; March 2004" benutzen.
