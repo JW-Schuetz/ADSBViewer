@@ -56,11 +56,11 @@ uint32_t CombineChunks::parity(ADSBLongBitset rawMessageBits)
 {
 	//	Die folgende Annahme ist bewiesen (ADS-B Viewer Doc.pdf):
 	//	---------------------------------------------------------
-	// 1.	Die Menge der boolschen Zahlen {0,1} erhält mit der Addition (=OR) und der Multiplikation (=AND)
-	//		die Struktur eines Körpers.
+	// 1.	Die Menge der boolschen Zahlen {0,1} erhält mit der Addition (logisches OR) und der 
+	//		Multiplikation (logisches AND) die Struktur eines Körpers.
 	//
-	//		Dann kann man die Ergebnisse aus "Polynomial GCDs by Linear Algebra; Barry Dayton; 
-	//		Northeastern Illinois University; March 2004" benutzen.
+	//		Damit kann man die Ergebnisse aus "Polynomial GCDs by Linear Algebra; Barry Dayton; 
+	//		Northeastern Illinois University; March 2004" für den Paritäts-Check benutzen.
 	//
 	BYTE* buffer = bitsToBin(rawMessageBits);
 	delete[] buffer;
