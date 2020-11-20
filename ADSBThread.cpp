@@ -54,7 +54,7 @@ size_t CADSBThread::write_callback(void* buffer, size_t size, size_t nmemb, void
 }
 
 // ADS-B-Server: Arbeitszimmer-Rasberry-Pi
-constexpr auto ADSBSERVER = "http://94.46.94.151:1234";
+constexpr auto ADSBSERVER = "http://94.46.94.151:4321";
 
 UINT CADSBThread::Thread(LPVOID param)
 {
