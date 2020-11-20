@@ -583,7 +583,7 @@ int CombineChunks::processMessage(char* s1, char* s2)
 
 			rawQueue->push_back(row);
 
-			if (icao != 0) icaoData->insert(pair(icao, rawMsg));	// TODO: unter der icao die Daten aller Messages sammeln
+			if (icao != 0) icaoData->insert(pair<unsigned long,char*>(icao, rawMsg));	// TODO: unter der icao die Daten aller Messages sammeln
 		}
 	}
 
