@@ -1,4 +1,4 @@
 # ADSBViewer
-Ein kleiner Betrachter für den ADS-B-Rohdatenstrom meines RTL-SDR-Empfängers am Arbeitszimmer-Rasberry-Pi.
+A small viewer for the ADS-B raw data stream from my RTL-SDR receiver atached to one of my Rasberry-Pis. 
 
 Version 0.0.0 (unter Entwicklung)
