@@ -1,0 +1,8 @@
+*.obj
+*.pdb
+/ADSBViewerNew.vcxproj.FileListAbsolute.txt
+*.pch
+*.log
+/ADSBViewerNew.exe.recipe
+/ADSBViewerNew.iobj
+/ADSBViewerNew.ipdb

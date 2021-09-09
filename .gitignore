@@ -13,3 +13,6 @@
 *.asv
 *.m
 *.lyx#
+/slprj/
+/x64/
+*.slxc
