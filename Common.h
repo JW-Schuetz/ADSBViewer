@@ -1,7 +1,7 @@
 #pragma once
 
 // Message-Id für Thread -> View-Kommunikation
-#define ADSB_DATA				(WM_USER+1)
+#define ADSB_DATA						(WM_USER+1)
 #define ADSB_THREAD_FINISHED_UNEXPECTED	(WM_USER+2)
 
 // erwartete Anzahl von ListCtrl-Items
