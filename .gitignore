@@ -1,5 +1,6 @@
-*.vcxproj.user
-*.vcxproj.filters
+/.vs/
+/Debug/
+/Release/
 *.aps
 /The  1090MHz  Riddle.pdf
 /MICA-MID - WP 02 - Mode S Surveillance Principle.pdf
